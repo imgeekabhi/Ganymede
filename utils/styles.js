@@ -4,7 +4,7 @@ const useStyles = makeStyles({
   navbar: {
     backgroundColor: '#565044',
     '& a': {
-      color: '#5B1D76',
+      color: '#ffffff',
       marginLeft: 10,
     },
   },
@@ -12,7 +12,19 @@ const useStyles = makeStyles({
     minHeight: '80vh',
   },
   footer: {
+    marginTop: 10,
     textAlign: 'center',
+  },
+  brand: {
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  section: {
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
 export default useStyles;
