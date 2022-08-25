@@ -1,10 +1,7 @@
-// import { useRouter } from 'next/router';
 import React from 'react';
-// import data from '../../utils/data';
 import db from '../../utils/db';
 import Product from '../../models/Product';
 import ProductDetail from '../../Components/ProductDetail';
-// import { Container } from '@material-ui/core';
 const ProductDetailPage = ({ product }) => {
   if (!product) {
     return <h3>Product Not Found!!</h3>;
