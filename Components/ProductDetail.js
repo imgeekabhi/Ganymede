@@ -16,7 +16,7 @@ import useStyles from '../utils/styles';
 import Image from 'next/image';
 const ProductDetail = ({ product }) => {
   const classes = useStyles();
-  console.log(product);
+
   return (
     <Layout>
       <Head>
