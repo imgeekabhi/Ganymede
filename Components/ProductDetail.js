@@ -10,13 +10,28 @@ import {
   Button,
 } from '@material-ui/core';
 import Layout from './Layout';
+import axios from 'axios';
 import NextLink from 'next/link';
 import Head from 'next/head';
+import { useContext } from 'react';
 import useStyles from '../utils/styles';
+import { Store } from '../utils/Store';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 const ProductDetail = ({ product }) => {
+  const router = useRouter();
+  const { dispatch } = useContext(Store);
   const classes = useStyles();
-  console.log(product);
+  const addToCartHandler = async () => {
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (data.countInStock <= 0) {
+      window.alert('Sorry! Product is out of stock');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });
+    router.push('/cart');
+  };
+
   return (
     <Layout>
       <Head>
@@ -90,7 +105,12 @@ const ProductDetail = ({ product }) => {
                   </Grid>
                 </ListItem>
                 <ListItem>
-                  <Button fullWidth variant="contained" color="primary">
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={addToCartHandler}
+                  >
                     Add to Cart
                   </Button>
                 </ListItem>
