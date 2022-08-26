@@ -22,11 +22,23 @@ import {
   List,
   ListItem,
 } from '@material-ui/core';
+import axios from 'axios';
 const CartPage = () => {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const { cartItems } = cart;
-  console.log(cartItems);
+
+  const updateCartHandler = async (item, quantity) => {
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock <= 0) {
+      window.alert('Sorry! Product is out of stock');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+  };
+  const removeItemHandler = (item) => {
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
   return (
     <Layout>
       <Head>
@@ -79,7 +91,12 @@ const CartPage = () => {
                         </NextLink>
                       </TableCell>
                       <TableCell>
-                        <Select value={item.quantity}>
+                        <Select
+                          value={item.quantity}
+                          onChange={(event) =>
+                            updateCartHandler(item, event.target.value)
+                          }
+                        >
                           {[...Array(item.countInStock).keys()].map((x) => (
                             <MenuItem key={x + 1} value={x + 1}>
                               {x + 1}
@@ -89,7 +106,11 @@ const CartPage = () => {
                       </TableCell>
                       <TableCell align="right">₹ {item.price}</TableCell>
                       <TableCell align="right">
-                        <Button variant="contained" color={`secondary`}>
+                        <Button
+                          variant="contained"
+                          color={`secondary`}
+                          onClick={() => removeItemHandler(item)}
+                        >
                           X
                         </Button>
                       </TableCell>
