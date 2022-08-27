@@ -7,6 +7,9 @@ const initialState = {
     cartItems: Cookies.get('cartItems')
       ? JSON.parse(Cookies.get('cartItems'))
       : [],
+    shippingAddress: Cookies.get('shippingAddress')
+      ? JSON.parse(Cookies.get('shippingAddress'))
+      : {},
   },
   // userInfo: Cookies.get('userInfo') ? JSON.parse.userInfo : null,
   userInfo: Cookies.get('userInfo')
@@ -22,6 +25,11 @@ const reducer = (state, action) => {
       Cookies.set('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+    case 'SAVE_SHIPPING_ADDRESS':
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: action.payload },
+      };
     case 'DARK_MODE_ON':
       return {
         ...state,
@@ -48,6 +56,7 @@ const reducer = (state, action) => {
         cart: { ...state.cart, cartItems },
       };
     }
+
     case 'USER_LOGIN': {
       return {
         ...state,

@@ -26,8 +26,6 @@ const LoginPage = () => {
   } = useForm();
   const router = useRouter();
   const { redirect } = router.query;
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
   const { state, dispatch } = useContext(Store);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { userInfo } = state;
@@ -42,7 +40,7 @@ const LoginPage = () => {
     try {
       const { data } = await axios.post('api/users/login', { email, password });
       dispatch({ type: 'USER_LOGIN', payload: data });
-      //   Cookies.set('userInfo', data);
+
       Cookies.set('userInfo', JSON.stringify(data));
       router.push(redirect || '/');
       alert('Login Successfully!');
