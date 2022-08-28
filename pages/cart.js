@@ -95,7 +95,7 @@ const CartPage = () => {
                           </Link>
                         </NextLink>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="right">
                         <Select
                           value={item.quantity}
                           onChange={(event) =>

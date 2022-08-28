@@ -2,9 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import Layout from '../Components/Layout';
 import Head from 'next/head';
 import Cookies from 'js-cookie';
-import CheckoutWizard from '../Components/checkoutWizard';
-// import NextLink from 'next/link';
-
+import CheckoutWizard from '../Components/CheckoutWizard';
 import { useForm, Controller } from 'react-hook-form';
 import {
   List,
@@ -15,7 +13,6 @@ import {
   Container,
 } from '@material-ui/core';
 import useStyles from '../utils/styles';
-
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
 const ShippingPage = () => {
@@ -26,8 +23,6 @@ const ShippingPage = () => {
     formState: { errors },
     setValue,
   } = useForm();
-
-  const { redirect } = router.query;
   const { state, dispatch } = useContext(Store);
   const {
     userInfo,
