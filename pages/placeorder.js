@@ -22,7 +22,7 @@ import {
   CircularProgress,
   ListItem,
 } from '@material-ui/core';
-
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useStyles from '../utils/styles';
 import { useSnackbar } from 'notistack';
@@ -61,7 +61,7 @@ function PlaceOrderPage() {
       const { data } = await axios.post(
         '/api/orders',
         {
-          orderOItems: cartItems,
+          orderItems: cartItems,
           shippingAddress,
           paymentMethod,
           itemsPrice,
@@ -86,6 +86,9 @@ function PlaceOrderPage() {
   };
   return (
     <Layout>
+      <Head>
+        <title>Place Order</title>
+      </Head>
       <Typography component="h1" variant="h1">
         Place Order
       </Typography>
