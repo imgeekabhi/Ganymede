@@ -26,6 +26,7 @@ import useStyles from '../../utils/styles';
 import { useSnackbar } from 'notistack';
 import { getError } from '../../utils/error';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import Head from 'next/head';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -195,6 +196,9 @@ function Order({ params }) {
 
   return (
     <Layout>
+      <Head>
+        <title>{`Order ${orderId}`}</title>
+      </Head>
       <Typography component="h1" variant="h1">
         Order {orderId}
       </Typography>
