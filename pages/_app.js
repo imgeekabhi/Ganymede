@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import { useEffect } from 'react';
 import { StoreProvider } from '../utils/Store';
 import { SnackbarProvider } from 'notistack';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps }) {
       }}
     >
       <StoreProvider>
-        <Component {...pageProps} />
+        <PayPalScriptProvider deferLoading={true}>
+          <Component {...pageProps} />
+        </PayPalScriptProvider>
       </StoreProvider>
     </SnackbarProvider>
   );
