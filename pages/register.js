@@ -18,6 +18,7 @@ import useStyles from '../utils/styles';
 import axios from 'axios';
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
+import { getError } from '../utils/error';
 const LoginPage = () => {
   const router = useRouter();
   const {
@@ -53,10 +54,7 @@ const LoginPage = () => {
       router.push(redirect || '/');
       alert('Login Successfully!');
     } catch (error) {
-      enqueueSnackbar(
-        error.response.data ? error.response.data.message : error.message,
-        { variant: 'error' }
-      );
+      enqueueSnackbar(getError(error), { variant: 'error' });
     }
   };
   return (

@@ -197,7 +197,7 @@ function Order({ params }) {
   return (
     <Layout>
       <Head>
-        <title>{`Order ${orderId}`}</title>
+        <title>{`Order ${order}`}</title>
       </Head>
       <Typography component="h1" variant="h1">
         Order {orderId}
