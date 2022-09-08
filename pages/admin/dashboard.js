@@ -65,10 +65,11 @@ const AdminDashboard = () => {
     };
     fetchData();
   }, []);
+
   return (
     <Layout>
       <Head>
-        <title>Order History</title>
+        <title>Admin Dashboard</title>
       </Head>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
