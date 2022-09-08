@@ -23,14 +23,16 @@ import {
   ListItem,
 } from '@material-ui/core';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 const CartPage = () => {
   const { state, dispatch } = useContext(Store);
+  const router = useRouter();
   const { cart } = state;
   const { cartItems } = cart;
 
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock <= 0) {
+    if (data.countInStock < quantity) {
       window.alert('Sorry! Product is out of stock');
       return;
     }
@@ -38,6 +40,9 @@ const CartPage = () => {
   };
   const removeItemHandler = (item) => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
+  const checkoutHandler = () => {
+    router.push('/shipping');
   };
   return (
     <Layout>
@@ -90,7 +95,7 @@ const CartPage = () => {
                           </Link>
                         </NextLink>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="right">
                         <Select
                           value={item.quantity}
                           onChange={(event) =>
@@ -139,7 +144,12 @@ const CartPage = () => {
                     </Typography>
                   </ListItem>
                   <ListItem>
-                    <Button variant="contained" color="primary" fullWidth>
+                    <Button
+                      onClick={checkoutHandler}
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                    >
                       Check Out
                     </Button>
                   </ListItem>
