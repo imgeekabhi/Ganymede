@@ -176,7 +176,7 @@ function Order({ params }) {
     enqueueSnackbar(getError(err), { variant: 'error' });
   }
 
-  async function deliverOrderHandler() {
+  const deliverOrderHandler = async () => {
     try {
       dispatch({ type: 'DELIVER_REQUEST' });
       const { data } = await axios.put(
@@ -192,8 +192,7 @@ function Order({ params }) {
       dispatch({ type: 'DELIVER_FAIL', payload: getError(err) });
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
-  }
-
+  };
   return (
     <Layout>
       <Head>
@@ -395,8 +394,7 @@ function Order({ params }) {
   );
 }
 
-export async function getServerSideProps({ params }) {
+export const getServerSideProps = async ({ params }) => {
   return { props: { params } };
-}
-
+};
 export default dynamic(() => Promise.resolve(Order), { ssr: false });
