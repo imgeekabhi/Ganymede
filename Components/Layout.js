@@ -72,6 +72,7 @@ const Layout = ({ children }) => {
     Cookies.remove('cartItems');
     router.push('/');
   };
+  console.log(userInfo);
   return (
     <div>
       <Head>
@@ -139,6 +140,15 @@ const Layout = ({ children }) => {
                     >
                       Order History
                     </MenuItem>
+                    {userInfo.isAdmin && (
+                      <MenuItem
+                        onClick={(e) =>
+                          loginMenuCloseHandler(e, '/admin/dashboard')
+                        }
+                      >
+                        Admin Dashboard
+                      </MenuItem>
+                    )}
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>
                 </>
