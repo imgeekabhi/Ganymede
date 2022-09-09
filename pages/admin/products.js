@@ -151,7 +151,8 @@ const AdminProducts = () => {
                                 >
                                   <EditIcon />
                                 </Button>
-                              </NextLink>{' '}
+                              </NextLink>
+                              &nbsp;
                               <Button
                                 size="small"
                                 variant="contained"
