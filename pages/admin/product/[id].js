@@ -2,7 +2,7 @@ import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import React, { useEffect, useContext, useReducer } from 'react';
+import React, { useEffect, useContext, useReducer, useState } from 'react';
 import {
   Grid,
   List,
@@ -70,6 +70,7 @@ const ProductEdit = ({ params }) => {
   const router = useRouter();
   const classes = useStyles();
   const { userInfo } = state;
+  const [productDetails, setProductDetails] = useState({});
 
   useEffect(() => {
     if (!userInfo) {
@@ -90,6 +91,7 @@ const ProductEdit = ({ params }) => {
           setValue('brand', data.brand);
           setValue('countInStock', data.countInStock);
           setValue('description', data.description);
+          setProductDetails(data);
         } catch (err) {
           dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
         }
@@ -125,7 +127,12 @@ const ProductEdit = ({ params }) => {
         { headers: { authorization: `Bearer ${userInfo.token}` } }
       );
       dispatch({ type: 'UPDATE_SUCCESS' });
-      enqueueSnackbar('Product updated successfully!', { variant: 'success' });
+      enqueueSnackbar(
+        productDetails.name === 'sample name'
+          ? 'Product Created successfully!'
+          : 'Product updated successfully!',
+        { variant: 'success' }
+      );
       router.push('/admin/products');
     } catch (err) {
       dispatch({ type: 'UPDATE_FAIL', payload: getError(err) });
@@ -152,10 +159,17 @@ const ProductEdit = ({ params }) => {
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
+
+  console.log(productDetails.name);
+
   return (
     <Layout>
       <Head>
-        <title>Edit Product</title>
+        <title>
+          {productDetails.name == 'sample name'
+            ? 'Create Product'
+            : 'Edit Product'}
+        </title>
       </Head>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
@@ -184,7 +198,9 @@ const ProductEdit = ({ params }) => {
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
-                  Edit Product
+                  {productDetails.name == 'sample name'
+                    ? 'Create Product'
+                    : 'Edit Product'}
                 </Typography>
               </ListItem>
               <ListItem>
@@ -397,7 +413,9 @@ const ProductEdit = ({ params }) => {
                         fullWidth
                         color="primary"
                       >
-                        Update
+                        {productDetails.name == 'sample name'
+                          ? 'Create'
+                          : 'Update'}
                       </Button>
                       {loadingUpdate && <CircularProgress />}
                     </ListItem>
