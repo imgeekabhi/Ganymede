@@ -4,7 +4,6 @@ import Product from '../../models/Product';
 import data from '../../utils/data';
 import User from '../../models/User';
 const handler = nc();
-
 handler.get(async (req, res) => {
   await db.connect();
   await User.deleteMany();
