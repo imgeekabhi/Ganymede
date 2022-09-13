@@ -65,10 +65,11 @@ const AdminDashboard = () => {
     };
     fetchData();
   }, []);
+
   return (
     <Layout>
       <Head>
-        <title>Order History</title>
+        <title>Admin Dashboard</title>
       </Head>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
@@ -82,6 +83,16 @@ const AdminDashboard = () => {
               <NextLink href="/admin/orders" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="Orders"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/products" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Products"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/users" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Users"></ListItemText>
                 </ListItem>
               </NextLink>
             </List>
