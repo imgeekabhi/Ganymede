@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useSnackbar } from 'notistack';
 import NextLink from 'next/link';
 import Head from 'next/head';
 import { Store } from '../utils/Store';
@@ -16,10 +18,21 @@ import {
   Switch,
   Badge,
   Button,
+  Box,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  Divider,
+  InputBase,
+  ListItemText,
   Menu,
   MenuItem,
 } from '@material-ui/core';
-
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { getError } from '../utils/error';
 import useStyles from '../utils/styles';
 import Cookies from 'js-cookie';
 const Layout = ({ children }) => {
@@ -50,6 +63,40 @@ const Layout = ({ children }) => {
     },
   });
   const classes = useStyles();
+
+  const [sidbarVisible, setSidebarVisible] = useState(false);
+  const sidebarOpenHandler = () => {
+    setSidebarVisible(true);
+  };
+  const sidebarCloseHandler = () => {
+    setSidebarVisible(false);
+  };
+
+  const [categories, setCategories] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const fetchCategories = async () => {
+    try {
+      const { data } = await axios.get(`/api/products/categories`);
+      setCategories(data);
+    } catch (error) {
+      enqueueSnackbar(getError(error), { variant: 'error' });
+    }
+  };
+
+  const [query, setQuery] = useState('');
+  const queryChangeHandler = (e) => {
+    setQuery(e.target.value);
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    router.push(`/search?query=${query}`);
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   const darkModeChangeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
     const newDarkMode = !darkMode;
@@ -81,15 +128,80 @@ const Layout = ({ children }) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppBar position="static" className={classes.navbar}>
-          <Toolbar>
-            <NextLink href={`/`} passHref>
-              <Link>
-                <Typography className={classes.brand} variant="h6">
-                  Ganymede
-                </Typography>
-              </Link>
-            </NextLink>
-            <div className={classes.grow}></div>
+          <Toolbar className={classes.toolbar}>
+            <Box display="flex" alignItems="center">
+              <IconButton
+                className={classes.menuButton}
+                edge="start"
+                aria-label="open drawer"
+                onClick={sidebarOpenHandler}
+              >
+                <MenuIcon className={classes.navbarButton} />
+              </IconButton>
+              <NextLink href="/" passHref>
+                <Link>
+                  <Typography className={classes.brand}>Ganymede</Typography>
+                </Link>
+              </NextLink>
+            </Box>
+            <Drawer
+              anchor="left"
+              open={sidbarVisible}
+              onClose={sidebarCloseHandler}
+            >
+              <List>
+                <ListItem>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Typography variant="h5" component="h5">
+                      Ganymede
+                    </Typography>
+                    <IconButton
+                      aria-label="close"
+                      onClick={sidebarCloseHandler}
+                    >
+                      <ChevronLeftIcon />
+                    </IconButton>
+                  </Box>
+                </ListItem>
+                <Divider light />
+                {categories.map((category) => (
+                  <NextLink
+                    key={category}
+                    href={`/search?category=${category}`}
+                    passHref
+                  >
+                    <ListItem
+                      button
+                      component="a"
+                      onClick={sidebarCloseHandler}
+                    >
+                      <ListItemText primary={category}></ListItemText>
+                    </ListItem>
+                  </NextLink>
+                ))}
+              </List>
+            </Drawer>
+            <div className={classes.searchSection}>
+              <form onSubmit={submitHandler} className={classes.searchForm}>
+                <InputBase
+                  name="query"
+                  className={classes.searchInput}
+                  placeholder="Search for products"
+                  onChange={queryChangeHandler}
+                />
+                <IconButton
+                  type="submit"
+                  className={classes.iconButton}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </form>
+            </div>
             <div>
               <Switch
                 checked={darkMode}
@@ -98,17 +210,18 @@ const Layout = ({ children }) => {
               />
               <NextLink href={`/cart`} passHref>
                 <Link>
-                  {cart.cartItems.length > 0 ? (
-                    <Badge
-                      overlap="rectangular"
-                      color="secondary"
-                      badgeContent={cart.cartItems.length}
-                    >
-                      Cart
-                    </Badge>
-                  ) : (
-                    'Cart'
-                  )}
+                  <Typography component="span">
+                    {cart.cartItems.length > 0 ? (
+                      <Badge
+                        color="secondary"
+                        badgeContent={cart.cartItems.length}
+                      >
+                        Cart
+                      </Badge>
+                    ) : (
+                      'Cart'
+                    )}
+                  </Typography>
                 </Link>
               </NextLink>
               {userInfo ? (
@@ -154,7 +267,9 @@ const Layout = ({ children }) => {
                 </>
               ) : (
                 <NextLink href={`/login`} passHref>
-                  <Link>Login</Link>
+                  <Link>
+                    <Typography component="span">Login</Typography>
+                  </Link>
                 </NextLink>
               )}
             </div>

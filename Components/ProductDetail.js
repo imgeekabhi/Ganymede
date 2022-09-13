@@ -140,7 +140,7 @@ const ProductDetail = ({ product }) => {
                       <Typography>Price</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography>{product.price}</Typography>
+                      <Typography>₹{product.price}</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
