@@ -53,9 +53,10 @@ const ProductDetail = ({ product }) => {
       setLoading(false);
       enqueueSnackbar('Review submitted successfully', { variant: 'success' });
       fetchReviews();
-    } catch (err) {
+    } catch (error) {
       setLoading(false);
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      window.alert(error);
+      enqueueSnackbar(getError(error), { variant: 'error' });
     }
   };
 

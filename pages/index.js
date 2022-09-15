@@ -1,3 +1,4 @@
+// MONGODB_URI = mongodb://localhost/ganymede
 import { Grid } from '@material-ui/core';
 import ProductItem from '../Components/ProductItem';
 import Layout from '../Components/Layout';
